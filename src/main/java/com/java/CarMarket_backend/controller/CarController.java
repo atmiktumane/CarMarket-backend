@@ -1,6 +1,7 @@
 package com.java.CarMarket_backend.controller;
 
 import com.java.CarMarket_backend.dto.CarDTO;
+import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,12 @@ public class CarController {
     @PutMapping("/update")
     public ResponseEntity<CarDTO> updateCar(@RequestBody CarDTO carDTO) throws Exception{
         return new ResponseEntity<>(carService.updateCar(carDTO), HttpStatus.OK);
+    }
+
+    // DELETE - Delete Car
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseDTO> deleteCar(@PathVariable String id) throws Exception{
+        return new ResponseEntity<>(carService.deleteCar(id), HttpStatus.OK);
     }
 
 }

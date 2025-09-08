@@ -1,6 +1,7 @@
 package com.java.CarMarket_backend.service.impl;
 
 import com.java.CarMarket_backend.dto.CarDTO;
+import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.exception.ResourceNotFoundException;
 import com.java.CarMarket_backend.model.CarModel;
 import com.java.CarMarket_backend.repository.CarRepository;
@@ -43,5 +44,13 @@ public class CarServiceImpl implements CarService {
         carRepository.save(carDTO.convertToCarEntity());
 
         return carDTO;
+    }
+
+    @Override
+    public ResponseDTO deleteCar(String id) throws Exception {
+        CarModel existingCar = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Car not found"));
+
+        carRepository.delete(existingCar);
+        return new ResponseDTO("Car deleted successfully");
     }
 }
