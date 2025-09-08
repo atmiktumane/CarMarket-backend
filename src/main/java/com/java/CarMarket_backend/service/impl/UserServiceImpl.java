@@ -6,6 +6,7 @@ import com.java.CarMarket_backend.dto.UserDTO;
 import com.java.CarMarket_backend.exception.EmailAlreadyExistsException;
 import com.java.CarMarket_backend.exception.EmptyFieldException;
 import com.java.CarMarket_backend.exception.InvalidCredentialsException;
+import com.java.CarMarket_backend.exception.ResourceNotFoundException;
 import com.java.CarMarket_backend.model.OtpModel;
 import com.java.CarMarket_backend.model.Role;
 import com.java.CarMarket_backend.model.UserModel;
@@ -127,6 +128,17 @@ public class UserServiceImpl implements UserService {
         mailSender.send(mailMessage);
 
         return new ResponseDTO("OTP sent successfully");
+    }
+
+    @Override
+    public ResponseDTO verifyOtp(String email, String otp) throws Exception {
+        OtpModel otpEntity = otpRepository.findById(email).orElseThrow(()-> new ResourceNotFoundException("OTP not found"));
+
+        if(!otpEntity.getOtpCode().equals(otp)){
+            throw new ResourceNotFoundException("OTP is Incorrect");
+        }
+
+        return new ResponseDTO("OTP is successfully verified");
     }
 
 
