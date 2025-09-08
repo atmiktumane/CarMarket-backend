@@ -2,6 +2,7 @@ package com.java.CarMarket_backend.service.impl;
 
 import com.java.CarMarket_backend.dto.UserDTO;
 import com.java.CarMarket_backend.exception.EmailAlreadyExistsException;
+import com.java.CarMarket_backend.exception.EmptyFieldException;
 import com.java.CarMarket_backend.model.Role;
 import com.java.CarMarket_backend.model.UserModel;
 import com.java.CarMarket_backend.repository.UserRepository;
@@ -20,6 +21,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO registerUser(UserDTO userDTO){
+
+        // Check if email is Empty
+        if(userDTO.getEmail().isEmpty()){
+            throw new EmptyFieldException("Please provide email");
+        }
+
         // Check if Email already exists
         if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
             throw new EmailAlreadyExistsException("Email already exists : " + userDTO.getEmail());
