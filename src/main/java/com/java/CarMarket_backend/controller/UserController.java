@@ -1,9 +1,12 @@
 package com.java.CarMarket_backend.controller;
 
 import com.java.CarMarket_backend.dto.LoginDTO;
+import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.dto.UserDTO;
 import com.java.CarMarket_backend.service.UserService;
+import jakarta.validation.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,5 +27,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO){
         return ResponseEntity.ok(userService.loginUser(loginDTO));
+    }
+
+    // POST - Send OTP
+    @PostMapping("/sendOtp/{email}")
+    public ResponseEntity<ResponseDTO> sendOtp(@PathVariable @Email(message = "Email is invalid.") String email) throws Exception{
+        return new ResponseEntity<>(userService.sendOtp(email), HttpStatus.OK);
     }
 }
