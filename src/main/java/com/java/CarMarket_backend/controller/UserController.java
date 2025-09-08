@@ -1,5 +1,6 @@
 package com.java.CarMarket_backend.controller;
 
+import com.java.CarMarket_backend.dto.LoginDTO;
 import com.java.CarMarket_backend.dto.UserDTO;
 import com.java.CarMarket_backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // Register
+    // POST - Register
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO){
         return ResponseEntity.ok(userService.registerUser((userDTO)));
+    }
+
+    // POST - Login
+    @PostMapping("/login")
+    public ResponseEntity<UserDTO> loginUser(@RequestBody LoginDTO loginDTO){
+        return ResponseEntity.ok(userService.loginUser(loginDTO));
     }
 }

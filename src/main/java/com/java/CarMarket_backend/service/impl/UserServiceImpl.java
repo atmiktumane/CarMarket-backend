@@ -1,8 +1,10 @@
 package com.java.CarMarket_backend.service.impl;
 
+import com.java.CarMarket_backend.dto.LoginDTO;
 import com.java.CarMarket_backend.dto.UserDTO;
 import com.java.CarMarket_backend.exception.EmailAlreadyExistsException;
 import com.java.CarMarket_backend.exception.EmptyFieldException;
+import com.java.CarMarket_backend.exception.InvalidCredentialsException;
 import com.java.CarMarket_backend.model.Role;
 import com.java.CarMarket_backend.model.UserModel;
 import com.java.CarMarket_backend.repository.UserRepository;
@@ -60,6 +62,20 @@ public class UserServiceImpl implements UserService {
         response.setRole(savedUser.getRole());
 
         return response;
+    }
+
+    @Override
+    public UserDTO loginUser(LoginDTO loginDTO) {
+        // Check if User is present or not
+        UserModel user = userRepository.findByEmail(loginDTO.getEmail()).orElseThrow(()-> new InvalidCredentialsException("Invalid Email or Password"));
+
+        // Match Password
+        if(!passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())){
+            throw new InvalidCredentialsException("Invalid Email or Password");
+        }
+
+        // Prepare Login Response body
+        return user.convertToUserDTO();
     }
 
 
