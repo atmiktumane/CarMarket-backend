@@ -1,6 +1,7 @@
 package com.java.CarMarket_backend.service.impl;
 
 import com.java.CarMarket_backend.dto.CarDTO;
+import com.java.CarMarket_backend.exception.ResourceNotFoundException;
 import com.java.CarMarket_backend.model.CarModel;
 import com.java.CarMarket_backend.repository.CarRepository;
 import com.java.CarMarket_backend.service.CarService;
@@ -31,5 +32,16 @@ public class CarServiceImpl implements CarService {
     public List<CarDTO> getAllCars() {
         // Return All Car List from DB
         return carRepository.findAll().stream().map((x)-> x.convertToCarDTO()).toList();
+    }
+
+    @Override
+    public CarDTO updateCar(CarDTO carDTO) throws Exception {
+        // Find Car By ID (present in carDTO)
+        carRepository.findById(carDTO.getId()).orElseThrow(()-> new ResourceNotFoundException("Car not found"));
+
+        // Save Car data in DB
+        carRepository.save(carDTO.convertToCarEntity());
+
+        return carDTO;
     }
 }

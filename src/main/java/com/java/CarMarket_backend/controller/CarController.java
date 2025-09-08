@@ -28,6 +28,10 @@ public class CarController {
         return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
     }
 
-
+    // PUT - Update Car
+    @PutMapping("/update")
+    public ResponseEntity<CarDTO> updateCar(@RequestBody CarDTO carDTO) throws Exception{
+        return new ResponseEntity<>(carService.updateCar(carDTO), HttpStatus.OK);
+    }
 
 }

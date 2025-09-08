@@ -8,4 +8,6 @@ public interface CarService {
     CarDTO addCar(CarDTO carDTO);
 
     List<CarDTO> getAllCars();
+
+    CarDTO updateCar(CarDTO carDTO) throws Exception;
 }
