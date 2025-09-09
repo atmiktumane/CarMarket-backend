@@ -93,8 +93,14 @@ public class UserServiceImpl implements UserService {
             throw new InvalidCredentialsException("Invalid Email or Password");
         }
 
+//        System.out.println("User Data : "+ user.convertToUserDTO());
+
+        UserDTO userDTO = user.convertToUserDTO();
+
+        userDTO.setPassword("");
+
         // Prepare Login Response body
-        return user.convertToUserDTO();
+        return userDTO;
     }
 
     @Override
