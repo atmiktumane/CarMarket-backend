@@ -4,6 +4,7 @@ import com.java.CarMarket_backend.dto.CarDTO;
 import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.exception.ResourceNotFoundException;
 import com.java.CarMarket_backend.model.CarModel;
+import com.java.CarMarket_backend.model.CarStatus;
 import com.java.CarMarket_backend.repository.CarRepository;
 import com.java.CarMarket_backend.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class CarServiceImpl implements CarService {
         // Current Time
         carDTO.setCreatedAt(LocalDateTime.now());
 
+        carDTO.setStatus(CarStatus.ACTIVE);
+
+        System.out.println("Car details : "+ carDTO);
+
         // Save in DB
         CarModel car = carRepository.save(carDTO.convertToCarEntity());
 
@@ -33,6 +38,20 @@ public class CarServiceImpl implements CarService {
     public List<CarDTO> getAllCars() {
         // Return All Car List from DB
         return carRepository.findAll().stream().map((x)-> x.convertToCarDTO()).toList();
+    }
+
+    @Override
+    public List<CarDTO> getAllActiveCars() {
+
+        // Filter and return only Active Car List
+        List<CarDTO> carDTOList = carRepository.findAll()
+                .stream()
+                .filter((x)-> x.getStatus() == CarStatus.ACTIVE)
+                .map((x)-> x.convertToCarDTO())
+                .toList();
+
+        // response
+        return carDTOList;
     }
 
     @Override

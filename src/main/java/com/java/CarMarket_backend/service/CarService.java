@@ -10,6 +10,8 @@ public interface CarService {
 
     List<CarDTO> getAllCars();
 
+    List<CarDTO> getAllActiveCars();
+
     CarDTO updateCar(CarDTO carDTO) throws Exception;
 
     ResponseDTO deleteCar(String id) throws Exception;

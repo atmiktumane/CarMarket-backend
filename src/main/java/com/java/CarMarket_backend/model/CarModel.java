@@ -25,9 +25,10 @@ public class CarModel {
     private Integer mileage;
     private String location;
     private CarCondition condition;
+    private CarStatus status;
 
     public CarDTO convertToCarDTO(){
-        return new CarDTO(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition);
+        return new CarDTO(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status);
     }
 
 }

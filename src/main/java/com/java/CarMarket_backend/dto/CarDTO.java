@@ -2,6 +2,7 @@ package com.java.CarMarket_backend.dto;
 
 import com.java.CarMarket_backend.model.CarCondition;
 import com.java.CarMarket_backend.model.CarModel;
+import com.java.CarMarket_backend.model.CarStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ public class CarDTO {
     private Integer mileage;
     private String location;
     private CarCondition condition;
+    private CarStatus status;
 
     public CarModel convertToCarEntity(){
-        return new CarModel(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition);
+        return new CarModel(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status);
     }
 }

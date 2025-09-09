@@ -29,6 +29,12 @@ public class CarController {
         return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
     }
 
+    // GET - All Active Cars
+    @GetMapping("/get-all-active")
+    public ResponseEntity<List<CarDTO>> getAllActiveCars(){
+        return new ResponseEntity<>(carService.getAllActiveCars(), HttpStatus.OK);
+    }
+
     // PUT - Update Car
     @PutMapping("/update")
     public ResponseEntity<CarDTO> updateCar(@RequestBody CarDTO carDTO) throws Exception{
