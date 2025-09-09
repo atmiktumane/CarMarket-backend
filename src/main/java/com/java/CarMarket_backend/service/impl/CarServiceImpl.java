@@ -19,13 +19,13 @@ public class CarServiceImpl implements CarService {
     private CarRepository carRepository;
 
     @Override
-    public CarDTO addCar(CarDTO carDTO) {
+    public CarDTO addCar(String user_id, CarDTO carDTO) {
         // Current Time
         carDTO.setCreatedAt(LocalDateTime.now());
 
         carDTO.setStatus(CarStatus.ACTIVE);
 
-        System.out.println("Car details : "+ carDTO);
+        carDTO.setUserId(user_id);
 
         // Save in DB
         CarModel car = carRepository.save(carDTO.convertToCarEntity());
@@ -51,6 +51,17 @@ public class CarServiceImpl implements CarService {
                 .toList();
 
         // response
+        return carDTOList;
+    }
+
+    @Override
+    public List<CarDTO> getAllSellerCars(String user_id) {
+        List<CarDTO> carDTOList = carRepository.findAll()
+                .stream()
+                .filter((x)-> x.getUserId().equals(user_id))
+                .map((x)-> x.convertToCarDTO())
+                .toList();
+
         return carDTOList;
     }
 

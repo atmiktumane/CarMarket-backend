@@ -24,8 +24,9 @@ public class CarDTO {
     private String location;
     private CarCondition condition;
     private CarStatus status;
+    private String userId;
 
     public CarModel convertToCarEntity(){
-        return new CarModel(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status);
+        return new CarModel(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status, this.userId);
     }
 }

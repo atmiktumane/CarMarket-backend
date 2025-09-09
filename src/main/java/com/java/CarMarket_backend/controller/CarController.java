@@ -18,9 +18,9 @@ public class CarController {
     private CarService carService;
 
     // POST - Add Car
-    @PostMapping("/add")
-    public ResponseEntity<CarDTO> addCar(@RequestBody CarDTO carDTO){
-        return new ResponseEntity<>(carService.addCar(carDTO), HttpStatus.CREATED);
+    @PostMapping("/add/{user_id}")
+    public ResponseEntity<CarDTO> addCar(@PathVariable String user_id, @RequestBody CarDTO carDTO){
+        return new ResponseEntity<>(carService.addCar(user_id, carDTO), HttpStatus.CREATED);
     }
 
     // GET ALL - Cars
@@ -33,6 +33,12 @@ public class CarController {
     @GetMapping("/get-all-active")
     public ResponseEntity<List<CarDTO>> getAllActiveCars(){
         return new ResponseEntity<>(carService.getAllActiveCars(), HttpStatus.OK);
+    }
+
+    // GET - All Cars associated with Particular User (Seller)
+    @GetMapping("/get-all/{user_id}")
+    public ResponseEntity<List<CarDTO>> getAllSellerCars(@PathVariable String user_id){
+        return new ResponseEntity<>(carService.getAllSellerCars(user_id), HttpStatus.OK);
     }
 
     // PUT - Update Car
