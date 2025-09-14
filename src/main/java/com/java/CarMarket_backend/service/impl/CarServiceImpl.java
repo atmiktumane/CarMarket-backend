@@ -20,6 +20,10 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO addCar(String user_id, CarDTO carDTO) {
+
+        // Set id as null
+        carDTO.setId(null);
+
         // Current Time
         carDTO.setCreatedAt(LocalDateTime.now());
 
@@ -56,9 +60,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarDTO> getAllSellerCars(String user_id) {
-        List<CarDTO> carDTOList = carRepository.findAll()
+        List<CarDTO> carDTOList = carRepository.findByUserIdOrderByCreatedAtDesc(user_id) // custom query method
                 .stream()
-                .filter((x)-> x.getUserId().equals(user_id))
                 .map((x)-> x.convertToCarDTO())
                 .toList();
 
