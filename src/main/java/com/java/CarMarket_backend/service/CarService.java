@@ -10,7 +10,7 @@ public interface CarService {
 
     List<CarDTO> getAllCars();
 
-    List<CarDTO> getAllActiveCars();
+    List<CarDTO> getAllActiveCars(String search);
 
     List<CarDTO> getAllSellerCars(String user_id);
 

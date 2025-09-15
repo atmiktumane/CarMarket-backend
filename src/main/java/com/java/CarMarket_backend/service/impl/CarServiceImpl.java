@@ -45,13 +45,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<CarDTO> getAllActiveCars() {
+    public List<CarDTO> getAllActiveCars(String search) {
 
         // Filter and return only Active Car List
         List<CarDTO> carDTOList = carRepository.findAll()
                 .stream()
-                .filter((x)-> x.getStatus() == CarStatus.ACTIVE)
-                .map((x)-> x.convertToCarDTO())
+                .filter((car)-> car.getStatus() == CarStatus.ACTIVE)
+                .filter((car)-> search == null || search.isEmpty()
+                        || car.getName().toLowerCase().contains(search.toLowerCase())  // search Name or Car Model
+                        || car.getModel().toLowerCase().contains(search.toLowerCase()))
+                .map((car)-> car.convertToCarDTO())
                 .toList();
 
         // response

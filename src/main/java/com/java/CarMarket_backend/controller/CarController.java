@@ -31,8 +31,8 @@ public class CarController {
 
     // GET - All Active Cars
     @GetMapping("/get-all-active")
-    public ResponseEntity<List<CarDTO>> getAllActiveCars(){
-        return new ResponseEntity<>(carService.getAllActiveCars(), HttpStatus.OK);
+    public ResponseEntity<List<CarDTO>> getAllActiveCars(@RequestParam(required = false) String search){
+        return new ResponseEntity<>(carService.getAllActiveCars(search), HttpStatus.OK);
     }
 
     // GET - All Cars associated with Particular User (Seller)
