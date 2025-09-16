@@ -1,5 +1,6 @@
 package com.java.CarMarket_backend.controller;
 
+import com.java.CarMarket_backend.dto.CarAnalyticsDTO;
 import com.java.CarMarket_backend.dto.CarDTO;
 import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.service.CarService;
@@ -51,6 +52,12 @@ public class CarController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ResponseDTO> deleteCar(@PathVariable String id) throws Exception{
         return new ResponseEntity<>(carService.deleteCar(id), HttpStatus.OK);
+    }
+
+    // GET - Car Analytics
+    @GetMapping("/analytics")
+    public ResponseEntity<CarAnalyticsDTO> getCarAnalytics(){
+        return new ResponseEntity<>(carService.getCarAnalytics(), HttpStatus.OK);
     }
 
 }

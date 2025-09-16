@@ -1,5 +1,6 @@
 package com.java.CarMarket_backend.service.impl;
 
+import com.java.CarMarket_backend.dto.CarAnalyticsDTO;
 import com.java.CarMarket_backend.dto.CarDTO;
 import com.java.CarMarket_backend.dto.ResponseDTO;
 import com.java.CarMarket_backend.exception.ResourceNotFoundException;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -88,5 +91,29 @@ public class CarServiceImpl implements CarService {
 
         carRepository.delete(existingCar);
         return new ResponseDTO("Car deleted successfully");
+    }
+
+    @Override
+    public CarAnalyticsDTO getCarAnalytics() {
+        List<CarModel> cars = carRepository.findAll();
+
+        // 1. Status counts
+        Map<String, Long> statusCounts = cars.stream()
+                .collect(Collectors.groupingBy(car -> car.getStatus().name(), Collectors.counting()));
+
+        // 2. Condition counts
+        Map<String, Long> conditionCounts = cars.stream()
+                .collect(Collectors.groupingBy(car -> car.getCondition().name(), Collectors.counting()));
+
+        // 3. Top 5 models with counts
+        Map<String, Long> modelCounts = cars.stream()
+                .collect(Collectors.groupingBy(CarModel::getModel, Collectors.counting()));
+
+        List<Map.Entry<String, Long>> topModels = modelCounts.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(5)
+                .toList();
+
+        return new CarAnalyticsDTO(statusCounts, conditionCounts, topModels);
     }
 }
