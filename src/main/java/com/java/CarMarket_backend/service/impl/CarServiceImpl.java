@@ -70,9 +70,24 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<CarDTO> getAllSellerCars(String user_id) {
-        List<CarDTO> carDTOList = carRepository.findByUserIdOrderByCreatedAtDesc(user_id) // custom query method
+        List<CarModel> carModels = carRepository.findByUserIdOrderByCreatedAtDesc(user_id);
+
+        List<CarDTO> carDTOList = carModels
                 .stream()
-                .map((x)-> x.convertToCarDTO())
+                .map(car -> {
+                    CarDTO carDTO = car.convertToCarDTO();
+
+                    // Fetch images for this car
+                    List<String> images = imagesRepository.findByCarId(carDTO.getId())
+                        .stream()
+                        .map(img -> Base64.getEncoder().encodeToString(img.getImage())) // convert byte[] → base64
+                        .toList();
+
+                    carDTO.setImages(images);
+
+                    return carDTO;
+
+                })
                 .toList();
 
         return carDTOList;

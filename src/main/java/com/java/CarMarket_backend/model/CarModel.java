@@ -29,7 +29,12 @@ public class CarModel {
     private String userId;
 
     public CarDTO convertToCarDTO(){
-        return new CarDTO(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status, this.userId);
+        return new CarDTO(this.id, this.name, this.model,
+                this.description, this.price, this.first_purchase_year,
+                this.createdAt, this.mileage, this.location, this.condition,
+                this.status, this.userId,
+                null // images will be set later in service
+        );
     }
 
 }

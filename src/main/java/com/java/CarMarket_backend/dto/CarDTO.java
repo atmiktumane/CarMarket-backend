@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +26,7 @@ public class CarDTO {
     private CarCondition condition;
     private CarStatus status;
     private String userId;
+    private List<String> images; // New field for images (base64 strings)
 
     public CarModel convertToCarEntity(){
         return new CarModel(this.id, this.name, this.model, this.description, this.price, this.first_purchase_year, this.createdAt, this.mileage, this.location, this.condition, this.status, this.userId);
