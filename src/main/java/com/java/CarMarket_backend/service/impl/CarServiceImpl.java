@@ -48,7 +48,19 @@ public class CarServiceImpl implements CarService {
     @Override
     public List<CarDTO> getAllCars() {
         // Return All Car List from DB
-        return carRepository.findAll().stream().map((x)-> x.convertToCarDTO()).toList();
+        return carRepository.findAll()
+                .stream()
+                .map((car)-> { // Insert Car Image as well from CarImages Table (MongoDB database)
+            CarDTO carDTO = car.convertToCarDTO();
+
+            // Fetch Only One Image for this car
+                    imagesRepository.findFirstByCarId(car.getId())
+                            .ifPresent(img ->
+                                    carDTO.setImages(List.of(Base64.getEncoder().encodeToString(img.getImage())))
+                            );
+
+            return carDTO;
+        }).toList();
     }
 
     @Override
