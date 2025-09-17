@@ -61,7 +61,18 @@ public class CarServiceImpl implements CarService {
                 .filter((car)-> search == null || search.isEmpty()
                         || car.getName().toLowerCase().contains(search.toLowerCase())  // search Name or Car Model
                         || car.getModel().toLowerCase().contains(search.toLowerCase()))
-                .map((car)-> car.convertToCarDTO())
+                .map((car)-> { // Insert Car Images as well from CarImages Table (MongoDB database)
+                    CarDTO carDTO = car.convertToCarDTO();
+                    // Fetch images for this car
+                    List<String> images = imagesRepository.findByCarId(car.getId())
+                            .stream()
+                            .map(img -> Base64.getEncoder().encodeToString(img.getImage())) // convert byte[] → base64
+                            .toList();
+
+                    carDTO.setImages(images);
+
+                    return carDTO;
+                })
                 .toList();
 
         // response
