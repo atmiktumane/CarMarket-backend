@@ -1,8 +1,6 @@
 package com.java.CarMarket_backend.controller;
 
-import com.java.CarMarket_backend.dto.CarAnalyticsDTO;
-import com.java.CarMarket_backend.dto.CarDTO;
-import com.java.CarMarket_backend.dto.ResponseDTO;
+import com.java.CarMarket_backend.dto.*;
 import com.java.CarMarket_backend.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,6 +56,18 @@ public class CarController {
     @GetMapping("/analytics")
     public ResponseEntity<CarAnalyticsDTO> getCarAnalytics(){
         return new ResponseEntity<>(carService.getCarAnalytics(), HttpStatus.OK);
+    }
+
+    // POST - Upload Car Images (multiple images)
+    @PostMapping("/upload-images")
+    public ResponseEntity<List<ImageDTO>> uploadCarImages(@RequestBody CarImagesRequestDTO imagesRequest){
+        return new ResponseEntity<>(carService.uploadCarImages(imagesRequest), HttpStatus.OK);
+    }
+
+    // GET - Get all images of a car
+    @GetMapping("/get-images/{carId}")
+    public ResponseEntity<List<ImageDTO>> getCarImages(@PathVariable String carId){
+        return new ResponseEntity<>(carService.getCarImages(carId), HttpStatus.OK);
     }
 
 }

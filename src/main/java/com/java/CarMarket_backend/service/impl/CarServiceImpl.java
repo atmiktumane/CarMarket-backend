@@ -1,17 +1,18 @@
 package com.java.CarMarket_backend.service.impl;
 
-import com.java.CarMarket_backend.dto.CarAnalyticsDTO;
-import com.java.CarMarket_backend.dto.CarDTO;
-import com.java.CarMarket_backend.dto.ResponseDTO;
+import com.java.CarMarket_backend.dto.*;
 import com.java.CarMarket_backend.exception.ResourceNotFoundException;
 import com.java.CarMarket_backend.model.CarModel;
 import com.java.CarMarket_backend.model.CarStatus;
+import com.java.CarMarket_backend.model.ImagesModel;
 import com.java.CarMarket_backend.repository.CarRepository;
+import com.java.CarMarket_backend.repository.ImagesRepository;
 import com.java.CarMarket_backend.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,6 +21,9 @@ import java.util.stream.Collectors;
 public class CarServiceImpl implements CarService {
     @Autowired
     private CarRepository carRepository;
+
+    @Autowired
+    private ImagesRepository imagesRepository;
 
     @Override
     public CarDTO addCar(String user_id, CarDTO carDTO) {
@@ -115,5 +119,29 @@ public class CarServiceImpl implements CarService {
                 .toList();
 
         return new CarAnalyticsDTO(statusCounts, conditionCounts, topModels);
+    }
+
+    @Override
+    public List<ImageDTO> uploadCarImages(CarImagesRequestDTO requestData) {
+        List<ImagesModel> imageEntities = requestData.getImages().stream()
+                .map(base64 -> new ImagesModel(
+                        null,
+                        Base64.getDecoder().decode(base64),
+                        requestData.getCarId()
+                ))
+                .collect(Collectors.toList());
+
+        return imagesRepository.saveAll(imageEntities)
+                .stream()
+                .map(ImagesModel::convertToImageDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ImageDTO> getCarImages(String carId) {
+        return imagesRepository.findByCarId(carId)
+                .stream()
+                .map(ImagesModel::convertToImageDTO)
+                .collect(Collectors.toList());
     }
 }

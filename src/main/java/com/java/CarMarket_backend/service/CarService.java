@@ -1,8 +1,6 @@
 package com.java.CarMarket_backend.service;
 
-import com.java.CarMarket_backend.dto.CarAnalyticsDTO;
-import com.java.CarMarket_backend.dto.CarDTO;
-import com.java.CarMarket_backend.dto.ResponseDTO;
+import com.java.CarMarket_backend.dto.*;
 
 import java.util.List;
 
@@ -20,4 +18,8 @@ public interface CarService {
     ResponseDTO deleteCar(String id) throws Exception;
 
     CarAnalyticsDTO getCarAnalytics();
+
+    List<ImageDTO> uploadCarImages(CarImagesRequestDTO requestData);
+
+    List<ImageDTO> getCarImages(String carId);
 }
